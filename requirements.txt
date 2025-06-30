@@ -27,3 +27,4 @@ uvicorn==0.35.0
 websockets==15.0.1
 faiss-cpu==1.11.0
 kokoro==0.9.4
+openai-whisper==20250625
