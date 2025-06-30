@@ -1,0 +1,27 @@
+name: Deploy to Hugging Face Space
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout full repo
+        uses: actions/checkout@v3
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "dev.abdullah.khaled@gmail.com"
+          git config --global user.name "Abdullah Khaled"
+
+      - name: Push to Hugging Face Space
+        run: |
+          git remote add space https://abdullah-khaled:${HF_TOKEN}@huggingface.co/spaces/abdullah-khaled/ai-voice-secretary
+          git lfs push space main --all
+          git push space main --force
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
