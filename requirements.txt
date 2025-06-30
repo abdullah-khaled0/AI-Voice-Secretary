@@ -1,18 +1,29 @@
 # Python 3.10.9
 
+aiohttp==3.12.13
+async-timeout==4.0.3
+certifi==2025.6.15
 fastapi==0.115.14
+google-api-core==2.25.1
+google-auth==2.40.3
+grpcio==1.73.1
+grpcio-status==1.71.2
 langchain==0.3.26
 langchain-community==0.3.26
 langchain-core==0.3.66
 langchain-google-genai==2.1.5
+langchain-text-splitters==0.3.8
 numpy==2.2.6
 pyaudio==0.2.14
+pydantic==2.11.7
 pydub==0.25.1
 python-dotenv==1.1.1
+requests==2.32.4
 sentence-transformers==4.1.0
 soundfile==0.13.1
 speechrecognition==3.14.3
 torch==2.7.1
 uvicorn==0.35.0
+websockets==15.0.1
 faiss-cpu==1.11.0
 kokoro==0.9.4
