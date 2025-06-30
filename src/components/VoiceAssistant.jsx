@@ -28,7 +28,7 @@ const VoiceAssistant = () => {
 
   // Initialize WebSocket
   useEffect(() => {
-    websocketRef.current = new WebSocket('ws://localhost:8000/ws');
+    websocketRef.current = new WebSocket('ws://abdullah-khaled-ai-voice-secretary.hf.space/ws');
 
     websocketRef.current.onopen = () => {
       console.log('WebSocket connected');
@@ -317,7 +317,7 @@ const VoiceAssistant = () => {
     try {
       console.log('Sending POST request to /text_query with query:', textInput);
       requestStartTimeRef.current = performance.now(); // Start latency timer
-      const response = await fetch('http://localhost:8000/text_query', {
+      const response = await fetch('https://abdullah-khaled-ai-voice-secretary.hf.space/text_query', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
