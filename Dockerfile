@@ -18,7 +18,8 @@ COPY requirements.txt .
 
 # Upgrade pip and install dependencies as root
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt && \
+    python -m spacy download en_core_web_sm
 
 # Create a non-root user with UID 1000
 RUN useradd -m -u 1000 user
