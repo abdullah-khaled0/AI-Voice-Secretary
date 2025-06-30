@@ -39,7 +39,7 @@ app = FastAPI()
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://abdullah-khaled-ai-voice-secretary.hf.space"],
+    allow_origins=["https://ai-voice-secretary-git-main-abdullah-khaled0s-projects.vercel.app"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["Content-Type", "Authorization", "Accept", "X-Requested-With"],
