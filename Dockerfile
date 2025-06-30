@@ -1,11 +1,12 @@
 # Use python:3.10.9-slim as the base image
 FROM python:3.10.9-slim
 
-# Install build dependencies for pyaudio
+# Install build dependencies for pyaudio and espeak-ng
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     python3-dev \
     portaudio19-dev \
+    espeak-ng \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
