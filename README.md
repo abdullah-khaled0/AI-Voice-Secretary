@@ -217,22 +217,7 @@ cd ai-voice-secretary
 - **Contact Info**: "How can I contact Abdullah?"
 - **Platform Links**: "What is Abdullah's LinkedIn profile?"
 
-## Project Structure
 
-```
-ai-voice-secretary/
-├── src/
-│   ├── backend/
-│   │   ├── voice_assistant.py  # FastAPI backend with RAG, STT, and TTS
-│   │   ├── requirements.txt    # Backend dependencies
-│   │   └── .env               # Environment variables (not committed)
-│   ├── frontend/
-│   │   ├── src/               # React source code
-│   │   ├── package.json       # Frontend dependencies
-│   │   └── vite.config.js     # Vite configuration
-├── Dockerfile                 # Docker configuration for backend
-└── README.md                 # Project documentation
-```
 
 ## Notes
 
@@ -242,15 +227,7 @@ ai-voice-secretary/
 - **HuggingFace Spaces**: Monitor resource usage on HuggingFace Spaces, as heavy computations (e.g., LLM inference) may require a paid plan.
 - **Vercel Deployment**: Configure Vercel to handle environment variables for the frontend if needed.
 
-## Contributing
 
-Contributions are welcome! Please:
-
-1. Fork the repository.
-2. Create a feature branch (`git checkout -b feature/your-feature`).
-3. Commit changes (`git commit -m "Add your feature"`).
-4. Push to the branch (`git push origin feature/your-feature`).
-5. Open a pull request.
 
 ## License
 
