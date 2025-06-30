@@ -1,0 +1,17 @@
+# Python 3.10.9
+
+fastapi==0.115.14
+langchain==0.3.26
+langchain-community==0.3.26
+langchain-core==0.3.66
+langchain-google-genai==2.1.5
+numpy==2.2.6
+pyaudio==0.2.14
+pydub==0.25.1
+python-dotenv==1.1.1
+sentence-transformers==4.1.0
+soundfile==0.13.1
+speechrecognition==3.14.3
+torch==2.7.1
+uvicorn==0.35.0
+faiss-cpu==1.11.0

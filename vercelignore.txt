@@ -1,0 +1,5 @@
+requirements.txt
+knowledge
+knowledge/
+__pycache__
+__pycache__/
