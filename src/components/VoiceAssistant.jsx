@@ -28,7 +28,7 @@ const VoiceAssistant = () => {
 
   // Initialize WebSocket
   useEffect(() => {
-    websocketRef.current = new WebSocket('ws://abdullah-khaled-ai-voice-secretary.hf.space/ws');
+    websocketRef.current = new WebSocket('wss://abdullah-khaled-ai-voice-secretary.hf.space/ws');
 
     websocketRef.current.onopen = () => {
       console.log('WebSocket connected');
