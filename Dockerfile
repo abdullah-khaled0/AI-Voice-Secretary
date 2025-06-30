@@ -1,31 +1,39 @@
+# Use python:3.10.9-slim as the base image
 FROM python:3.10.9-slim
 
+# Install build dependencies for pyaudio
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    python3-dev \
+    portaudio19-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
 WORKDIR /app
 
-# Copy project files into the container
-COPY . .
+# Copy requirements.txt first to leverage Docker caching
+COPY requirements.txt .
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Upgrade pip and install dependencies as root
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
-# Set up a new user named "user" with user ID 1000
+# Create a non-root user with UID 1000
 RUN useradd -m -u 1000 user
 
-# Switch to the "user" user
+# Switch to the non-root user
 USER user
 
-# Set home to the user's home directory
+# Set environment variables for the user
 ENV HOME=/home/user \
-	PATH=/home/user/.local/bin:$PATH
+    PATH=/home/user/.local/bin:$PATH
 
-# Set the working directory to the user's home directory
+# Set working directory to the user's home directory
 WORKDIR $HOME/app
 
-# Try and run pip command after setting the user with `USER user` to avoid permission issues with Python
-RUN pip install --no-cache-dir --upgrade pip
-
-# Copy the current directory contents into the container at $HOME/app setting the owner to the user
-COPY --chown=user . $HOME/app
+# Copy project files and set ownership to the user
+COPY --chown=user:user . .
 
 # Expose the port used by HF Spaces
 EXPOSE 7860
