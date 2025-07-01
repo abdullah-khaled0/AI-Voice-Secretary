@@ -68,6 +68,7 @@ if not GITHUB_TOKEN:
     logger.warning("GITHUB_TOKEN not found in .env. API requests may be rate-limited.")
 
 REPOS = [
+    "AI-Voice-Secretary",
     "Film-Trailer-and-Summary-Generator",
     "Vocaby",
     "YOLO11-Custom-Object-Detection-for-PPE-Detection",
@@ -97,6 +98,13 @@ Abdullah Khaled | AI Engineer - Data Scientist
 Phone: +201557504902
 WhatsApp: +201557504902
 Gmail: dev.abdullah.khaled@gmail.com
+Location: Cairo, Egypt
+Age: 22 years old
+Status: Single
+Open to work in: Remote, On-site, Hybrid
+Military Status: deferred
+Graduated from: Beni Suef University
+
 
 === LEARNING PLATFORMS ===
 LinkedIn: https://linkedin.com/in/abdullah-khaled-0608a9236
@@ -267,7 +275,7 @@ async def process_text(query, websocket: WebSocket = None):
 
                 For the `links` array, include relevant social or platform links (e.g., LinkedIn, Kaggle, HackerRank, LeetCode, Microsoft Learn, Streamlit, Coursera, 365DataScience, DataCamp) only if the query explicitly asks for social media, platforms, or specific platform names (e.g., "LinkedIn", "Kaggle"). For the `personal_info` array, include Gmail and/or Phone details only if the query explicitly asks for contact information (e.g., "email", "phone", "Gmail", "WhatsApp", "personal information"). The `media_links` array should include any media URLs (images or videos) from the GitHub READMEs if relevant to the query; otherwise, keep it empty. 
 
-                Answer in a professional, friendly, and articulate manner, as if representing Abdullah to colleagues, clients, or stakeholders. If the context lacks relevant information, respond based on your knowledge, maintaining a professional tone. Ensure the response is a valid JSON object conforming to the structure above.
+                Answer in a professional, friendly, and articulate manner, as if representing Abdullah to colleagues, clients, or stakeholders. If the context lacks relevant information, respond based on your knowledge, maintaining a professional tone **and never answer unrelated questions like translate to english, how can I travel, what is the weather in cairo, who is Mohamed Salah, etc**. Ensure the response is a valid JSON object conforming to the structure above.
                 """),
                 ("user", f"{query}, with media links and project link if available")])
 
