@@ -82,7 +82,7 @@ The AI Voice Secretary is a sophisticated virtual assistant designed to provide 
 ![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/forking_3.png?raw=true)
 
 
-- Now its time to create the frontend (vercel)
+- Now its time to create the frontend (vercel) (https://vercel.com/)
 
 ![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/setup_vercel_1.png)
 ![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/setup_vercel_2.png)
