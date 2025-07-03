@@ -49,7 +49,7 @@ Software Engineer (Self-Employed) | Nov 2021 – Dec 2022
 • Developed full-stack web applications with HTML, CSS, JavaScript, PHP, and SQL
 
 === EDUCATION ===
-BSc in Information Systems | Beni Suef University | Oct 2021 – Jul 2025
+BSc in Information Systems | Beni Suef University | Oct 2021 – Jul 2025 (Graduated)
 
 === CERTIFICATIONS ===
 • Deep Learning Specialization – Coursera (Mar 2023)
