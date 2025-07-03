@@ -24,6 +24,7 @@ import requests
 from langchain.docstore.document import Document
 from pydantic import BaseModel
 from typing import List
+from .profile_data import profile_str, REPOS, YOUR_NAME, YOUR_GITHUB_USERNAME, YOUR_VERCEL_URL
 
 
 # Set up logging
@@ -39,7 +40,7 @@ app = FastAPI()
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://ai-voice-secretary-git-main-abdullah-khaled0s-projects.vercel.app"],
+    allow_origins=[YOUR_VERCEL_URL],
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["Content-Type", "Authorization", "Accept", "X-Requested-With"],
@@ -62,85 +63,12 @@ except Exception as e:
     raise Exception("Initialization of language model or embeddings failed")
 
 # GitHub API setup
-GITHUB_USERNAME = "abdullah-khaled0"
+GITHUB_USERNAME = YOUR_GITHUB_USERNAME
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")  # Add your GitHub Personal Access Token in .env
 if not GITHUB_TOKEN:
     logger.warning("GITHUB_TOKEN not found in .env. API requests may be rate-limited.")
 
-REPOS = [
-    "AI-Voice-Secretary",
-    "Film-Trailer-and-Summary-Generator",
-    "Vocaby",
-    "YOLO11-Custom-Object-Detection-for-PPE-Detection",
-    "Advanced-Retail-Analytics-using-Excel-and-Python",
-    "Pix2Pix-Sketch-to-Image-Colorization",
-    "PDF-Quiz-Generator-with-AI-and-React",
-    "Fine-Tuning-DeepSeek-R1-Distill-Llama-8B-on-Medical-CoT-Dataset",
-    "Hotels-AI-Agent",
-    "Fine-Tuning-Llama-2-Using-QLoRA",
-    "Customer-Segmentation",
-    "AI-Powered-Search-and-Recommendation-System",
-    "Exam-Generator",
-    "Walmart-Analytics",
-    "ts-forecasting-with-prophet",
-    "Credit-Fraud-Detector",
-    "Supply-Chain-Analysis-using-R",
-    "A-B-Testing-with-Cookie-Cats-mobile-game-dataset",
-    "ETL-Project-with-SSIS-and-PowerBI",
-    "ELT-Pipeline-with-Airflow-DBT-Soda-Snowflake"
-]
 
-# Profile information
-profile_str = """
-Abdullah Khaled | AI Engineer - Data Scientist
-
-=== PERSONAL INFORMATION ===
-Phone: +201557504902
-WhatsApp: +201557504902
-Gmail: dev.abdullah.khaled@gmail.com
-Location: Cairo, Egypt
-Age: 22 years old
-Status: Single
-Open to work in: Remote, On-site, Hybrid
-Military Status: deferred
-Graduated from: Beni Suef University
-
-
-=== LEARNING PLATFORMS ===
-LinkedIn: https://linkedin.com/in/abdullah-khaled-0608a9236
-Kaggle: https://kaggle.com/abdullah7aled
-HackerRank: https://www.hackerrank.com/abdullah_7aled
-LeetCode: https://leetcode.com/u/3bdullah_7aled/
-Microsoft Learn: https://learn.microsoft.com/en-us/users/abdullahkhaled-4050/
-Streamlit: https://share.streamlit.io/user/abdullah-khaled0
-Coursera: https://www.coursera.org/user/a417b4d4afc4a0d67abb5bacc39083a5
-365DataScience: https://learn.365datascience.com/profile/abdullah-khaled-4/
-DataCamp: https://www.datacamp.com/portfolio/3bdullah
-
-=== SKILLS ===
-• Programming: Python (Pandas, Matplotlib, Numpy, PySpark), R, JavaScript, SQL
-• AI/ML: Scikit-Learn, PyTorch, Tensorflow, Transformers, NLP (Spacy, NLTK), Langchain, LangGraph, Prompt Engineering, Fine-tuning LLMs, RAG, MCP
-• MLOps & Deployment: Flask, FastAPI, MLFlow, DVC, CI/CD, Railway, Docker
-• BI & Visualization Tools: SQL, Tableau, Power BI, Excel, Data warehouse, Statistics, Statistical Analysis, Time Series Analysis, Hypothesis Testing, AB Testing, Web Scraping
-• Cloud & Data Engineering: Azure (ML, AI Services, Databricks), ETL(Airflow, DBT, SSIS)
-
-=== EXPERIENCE ===
-WorldQuant University - Remote May 2023 - May 2023
-Data Scientist Intern
-• Completed a practical program in data science, focusing on Python, machine learning, and statistical modeling.
-• Applied data analysis and visualization tools to real-world projects, gaining hands-on experience.
-
-Software Engineer (Self-Employed) | Nov 2021 – Dec 2022
-• Built and launched 6+ Android applications using Flutter and native technologies
-• Developed full-stack web applications with HTML, CSS, JavaScript, PHP, and SQL
-
-=== EDUCATION ===
-BSc in Information Systems | Beni Suef University | Oct 2021 – Jul 2025
-
-=== CERTIFICATIONS ===
-• Deep Learning Specialization – Coursera (Mar 2023)
-• Machine Learning Specialization – Coursera (Feb 2023)
-"""
 
 # Pydantic model for response structure
 class AssistantResponse(BaseModel):
@@ -171,33 +99,36 @@ def fetch_readme(repo_name):
     except Exception as e:
         logger.error(f"Error fetching README for {repo_name}: {e}", exc_info=True)
         return None
+    
+
+directory = "knowledge/indexes/repos"
+logger.debug("Loading documents from GitHub")
+if not os.path.exists(directory):
+    logger.info(f"Directory {directory} does not exist, creating and populating with documents")
+    os.makedirs(directory, exist_ok=True)
+    documents = []
+    for repo in REPOS:
+        doc = fetch_readme(repo)
+        if doc:
+            documents.append(doc)
+        else:
+            logger.warning(f"Skipping repository {repo} due to fetch failure")
+    
+    if not documents:
+        logger.warning("No documents loaded from GitHub. Proceeding with empty retriever.")
+        vectorstore = FAISS.from_texts(texts=["No GitHub READMEs available"], embedding=embeddings).as_retriever()
+
+    if documents:
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=5000, chunk_overlap=300)
+        splits = text_splitter.split_documents(documents)
+        vectorstore = FAISS.from_documents(documents=splits, embedding=embeddings)
+        vectorstore.save_local(directory)
+        logger.info(f"Saved FAISS index to {directory}")
 
 # Load and process GitHub READMEs for RAG
 def load_documents(query):
     try:
         directory = "knowledge/indexes/repos"
-        logger.debug("Loading documents from GitHub")
-        if not os.path.exists(directory):
-            logger.info(f"Directory {directory} does not exist, creating and populating with documents")
-            os.makedirs(directory, exist_ok=True)
-            documents = []
-            for repo in REPOS:
-                doc = fetch_readme(repo)
-                if doc:
-                    documents.append(doc)
-                else:
-                    logger.warning(f"Skipping repository {repo} due to fetch failure")
-            
-            if not documents:
-                logger.warning("No documents loaded from GitHub. Proceeding with empty retriever.")
-                return FAISS.from_texts(texts=["No GitHub READMEs available"], embedding=embeddings).as_retriever()
-            
-            text_splitter = RecursiveCharacterTextSplitter(chunk_size=10000, chunk_overlap=500)
-            splits = text_splitter.split_documents(documents)
-            vectorstore = FAISS.from_documents(documents=splits, embedding=embeddings)
-            vectorstore.save_local(directory)
-            logger.info(f"Saved FAISS index to {directory}")
-
         vectorstore = FAISS.load_local(directory, embeddings, allow_dangerous_deserialization=True)
         results = vectorstore.similarity_search(query, k=5)
 
@@ -234,7 +165,7 @@ async def process_text(query, websocket: WebSocket = None):
         prompt = ChatPromptTemplate([(
                 "system",
                 """
-                You are a professional and courteous AI secretary for Abdullah Khaled. Your role is to provide clear, concise, and polished responses about Abdullah's GitHub projects or his professional profile in JSON format. Structure the response as follows:\n
+                You are a professional and courteous AI secretary for {name}. Your role is to provide clear, concise, and polished responses about {name}'s GitHub projects or his professional profile in JSON format. Structure the response as follows:\n
 
                 {{
                 "response": "Details about the project or general response if no project is mentioned",
@@ -256,7 +187,7 @@ async def process_text(query, websocket: WebSocket = None):
 
                 Based on the following contexts:
 
-                === Abdullah Profile Information ===\n
+                === {name} Profile Information ===\n
                 {profile}
 
                 === GitHub Project Context ===\n
@@ -266,16 +197,16 @@ async def process_text(query, websocket: WebSocket = None):
                 {repos}
 
                 \n
-                Important: My github username is abdullah-khaled0\n
+                Important: My github username is {github_username}\n
 
                 if the path of media (images or videos) dont have https, make the path url like this:
-                https://raw.githubusercontent.com/abdullah-khaled0/repo_name/main/the_path_without_https
+                https://raw.githubusercontent.com/{github_username}/repo_name/main/the_path_without_https
 
-                Generate the response based on the user query. If the query mentions a specific project (e.g., Film-Trailer-and-Summary-Generator, Vocaby, YOLO11-Custom-Object-Detection-for-PPE-Detection, Pix2Pix-Sketch-to-Image-Colorization), include details from the corresponding GitHub README in `response` and include any media URLs (images or videos) from the README in `media_links`. For queries about Abdullah's skills, experience, education, certifications, or contact info, use the profile information in `response`. 
+                Generate the response based on the user query. If the query mentions a specific project, include details from the corresponding GitHub README in `response` and include any media URLs (images or videos) from the README in `media_links`. For queries about Abdullah's skills, experience, education, certifications, or contact info, use the profile information in `response`. 
 
                 For the `links` array, include relevant social or platform links (e.g., LinkedIn, Kaggle, HackerRank, LeetCode, Microsoft Learn, Streamlit, Coursera, 365DataScience, DataCamp) only if the query explicitly asks for social media, platforms, or specific platform names (e.g., "LinkedIn", "Kaggle"). For the `personal_info` array, include Gmail and/or Phone details only if the query explicitly asks for contact information (e.g., "email", "phone", "Gmail", "WhatsApp", "personal information"). The `media_links` array should include any media URLs (images or videos) from the GitHub READMEs if relevant to the query; otherwise, keep it empty. 
 
-                Answer in a professional, friendly, and articulate manner, as if representing Abdullah to colleagues, clients, or stakeholders. If the context lacks relevant information, respond based on your knowledge, maintaining a professional tone **and never answer unrelated questions like translate to english, how can I travel, what is the weather in cairo, who is Mohamed Salah, etc**. Ensure the response is a valid JSON object conforming to the structure above.
+                Answer in a professional, friendly, and articulate manner, as if representing {name} to colleagues, clients, or stakeholders. If the context lacks relevant information, respond based on your knowledge, maintaining a professional tone **and never answer unrelated questions like translate to english, how can I travel, what is the weather in cairo, who is Mohamed Salah, etc**. Ensure the response is a valid JSON object conforming to the structure above.
                 """),
                 ("user", f"{query}, with media links and project link if available")])
 
@@ -296,7 +227,7 @@ async def process_text(query, websocket: WebSocket = None):
         )
         
         # Process with RAG chain
-        response = rag_chain.invoke({"context": context, "profile": profile_str, "repos": REPOS})
+        response = rag_chain.invoke({"context": context, "profile": profile_str, "repos": REPOS, "github_username": YOUR_GITHUB_USERNAME, "name": YOUR_NAME})
 
         logger.info(f"Raw response from LLM: {response}")
         
