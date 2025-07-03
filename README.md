@@ -24,6 +24,77 @@ The AI Voice Secretary is a sophisticated virtual assistant designed to provide 
 - **WebSocket Communication**: Enables real-time audio and text interaction between the frontend and backend.
 - **Responsive UI**: Built with React and styled with Tailwind CSS for a modern and user-friendly interface.
 
+
+## Step by step on how to make your own one:
+
+- Fork the repo
+
+![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/forking_1.png)
+
+
+- After creating your huggingface account (https://huggingface.co/) go to profile and get the HF_TOKEN (Create new one and save the value)
+
+![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/HF_Token_1.png?raw=true)
+![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/HF_Token_2.png)
+
+
+- Add the huggingface token here with the name of HF_TOKEN
+
+![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/forking_2.png?raw=true)
+
+
+
+- Go to my space and duplicate it (https://huggingface.co/spaces/abdullah-khaled/ai-voice-secretary/tree/main)
+
+![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/setup_space_1.png?raw=true)
+![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/setup_space_2.png?raw=true)
+
+
+- To get the github token and Google api
+![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/getting_github_token.png?raw=true)
+![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/getting_gemini_key.png?raw=true)
+
+
+
+- Now update the values based on your personal data (Important: update these values on github repo not huggingface repo)
+- Note: you will get the value of Vercel URL after finishing this, and don't forget to change it after the creation
+
+![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/setup_space_3.png?raw=true)
+
+
+- And go to this file and update the specified values (the space name and your username are above beside your profile picture)
+
+![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/setup_space_4.png?raw=true)
+![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/setup_space_5.png?raw=true)
+![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/setup_space_6.png?raw=true)
+
+
+
+- Then go to this file and change these values based on yours
+
+![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/setup_space_7.png?raw=true)
+![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/github_link.png?raw=true)
+
+
+
+- Go the main.yaml in workflow and change these values based on yours
+
+![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/forking_3.png?raw=true)
+
+
+- Now its time to create the frontend (vercel)
+
+![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/setup_vercel_1.png)
+![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/setup_vercel_2.png)
+![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/setup_vercel_3.png)
+![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/setup_vercel_4.png)
+
+
+
+- Finally change this Vercel URL
+
+![Image](https://github.com/abdullah0150/Images/blob/main/AI_Voice_Images/setup_space_3.png?raw=true)
+
 ## How It Works
 
 The AI Voice Secretary integrates multiple components to process user queries and deliver responses:
